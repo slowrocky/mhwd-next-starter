@@ -1,5 +1,9 @@
 import { Container } from "@/app/components/layout/container";
 import { Section } from "@/app/components/layout/section";
+import { Button } from "@/app/components/ui/button";
+import { ButtonLink } from "@/app/components/ui/button-link";
+import { Label } from "./components/ui/label";
+import { Input } from "./components/ui/input";
 
 export default function Home() {
   return (
@@ -27,6 +31,25 @@ export default function Home() {
           <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
             Core layout is working.
           </h2>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <ButtonLink href="/kontakt">Kontaktovať</ButtonLink>
+
+            <ButtonLink href="/sluzby" variant="secondary">
+              Služby
+            </ButtonLink>
+
+            <Button variant="ghost">Button test</Button>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
+
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              placeholder="vas@email.sk"
+            />
+          </div>
         </Container>
       </Section>
     </main>
