@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { siteConfig } from "@/config/site";
+import { Header } from "@/app/components/layout/header";
+import { Footer } from "@/app/components/layout/footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -13,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MHWD Next Starter",
-  description: "Reusable Next.js starter for MHWD client websites.",
+  title: siteConfig.name,
+  description: siteConfig.description,
 };
 
 export default function RootLayout({
@@ -25,7 +28,13 @@ export default function RootLayout({
   return (
     <html lang="sk">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
+        <div className="flex min-h-screen flex-col">
+          <Header />
+
+          <div className="flex-1">{children}</div>
+
+          <Footer />
+        </div>
       </body>
     </html>
   );
