@@ -41,21 +41,23 @@ export async function submitContact(
   }
 
   const site = await getSiteSettings();
-  const response = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-    body: JSON.stringify({
-      from,
-      to: [site.contact.email],
-      reply_to: email,
-      subject: `Nová správa z webu od ${name}`,
-      text: `Meno: ${name}\nE-mail: ${email}\n\n${message}`,
-    }),
-  });
+  try {
+    const response = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        from,
+        to: [site.contact.email],
+        reply_to: email,
+        subject: `Nová správa z webu od ${name}`,
+        text: `Meno: ${name}\nE-mail: ${email}\n\n${message}`,
+      }),
+    });
 
-  if (!response.ok) {
-    return { status: "error", message: "Správu sa nepodarilo odoslať. Skúste to prosím neskôr." };
+    if (response.ok) return { status: "success", message: "Ďakujeme, správa bola odoslaná." };
+  } catch {
+    // Return the same user-facing error for network failures and API failures.
   }
 
-  return { status: "success", message: "Ďakujeme, správa bola odoslaná." };
+  return { status: "error", message: "Správu sa nepodarilo odoslať. Skúste to prosím neskôr." };
 }

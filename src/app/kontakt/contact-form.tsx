@@ -33,7 +33,7 @@ export function ContactForm() {
         {pending ? "Odosielam…" : "Odoslať správu"}
       </button>
       {state.message && (
-        <p role="status" className={state.status === "error" ? "text-sm text-red-700" : "text-sm text-green-700"}>
+        <p role="status" aria-live="polite" className={state.status === "error" ? "text-sm text-red-700" : "text-sm text-green-700"}>
           {state.message}
         </p>
       )}
