@@ -131,6 +131,8 @@ GitHub Actions runs `npm ci`, lint and a production build for pushes to `main`
 and for pull requests. The workflow uses placeholder public Sanity values so it
 does not require project secrets during validation.
 
+For a new client project, follow [`TEMPLATE_SETUP.md`](TEMPLATE_SETUP.md).
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.

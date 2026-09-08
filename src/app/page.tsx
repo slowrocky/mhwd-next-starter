@@ -2,6 +2,7 @@ import { Container } from "@/app/components/layout/container";
 import { Section } from "@/app/components/layout/section";
 import { client, sanityFetchOptions } from "@/sanity/lib/client";
 import { PRODUCTS_QUERY } from "@/sanity/lib/queries";
+import { getSiteSettings } from "@/sanity/lib/site-settings";
 import Link from "next/link";
 
 import Image from "next/image";
@@ -9,7 +10,10 @@ import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
 
 export default async function Home() {
-  const products = await client.fetch(PRODUCTS_QUERY, {}, sanityFetchOptions);
+  const [products, site] = await Promise.all([
+    client.fetch(PRODUCTS_QUERY, {}, sanityFetchOptions),
+    getSiteSettings(),
+  ]);
 
   return (
     <main>
@@ -17,27 +21,28 @@ export default async function Home() {
         <Container>
           <div className="max-w-3xl">
             <p className="mb-4 text-sm font-medium uppercase tracking-wider text-muted">
-              MHWD
+              {site.shortName}
             </p>
 
             <h1 className="text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-              Next.js Starter
+              {site.name}
             </h1>
 
             <p className="mt-6 max-w-2xl text-lg leading-8 text-muted">
-              Reusable foundation for custom MHWD client websites.
+              {site.description}
             </p>
           </div>
         </Container>
       </Section>
 
-      <Section className="border-t border-border bg-surface">
-        <Container>
-          <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-            Produkty
-          </h2>
-          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {products.map((product, index) => (
+      {products.length > 0 && (
+        <Section className="border-t border-border bg-surface">
+          <Container>
+            <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+              Produkty
+            </h2>
+            <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {products.map((product, index) => (
               <article
                 key={product._id}
                 className="rounded-lg border border-border bg-background p-6"
@@ -79,10 +84,11 @@ export default async function Home() {
                   </p>
                 )}
               </article>
-            ))}
-          </div>
-        </Container>
-      </Section>
+              ))}
+            </div>
+          </Container>
+        </Section>
+      )}
     </main>
   );
 }
