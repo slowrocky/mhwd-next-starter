@@ -13,6 +13,16 @@ export const SITE_SETTINGS_QUERY = defineQuery(`
   }
 `);
 
+export const SERVICES_QUERY = defineQuery(`
+  *[_type == "service" && status == "active"] | order(name asc) {
+    _id,
+    name,
+    slug,
+    description,
+    image
+  }
+`);
+
 export const PRODUCTS_SITEMAP_QUERY = defineQuery(`
   *[
     _type == "product" &&

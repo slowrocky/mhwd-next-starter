@@ -14,6 +14,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 1,
     },
+    {
+      url: new URL("/sluzby", site.url).href,
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
     ...products.flatMap((product) => product.slug ? [{
       url: new URL(`/produkty/${encodeURIComponent(product.slug)}`, site.url).href,
       lastModified: product._updatedAt,

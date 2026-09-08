@@ -84,6 +84,13 @@ For a new client, open `Nastavenia webu` in Studio, complete all four sections
 and publish it. Set the real public URL before deployment: it supplies canonical
 URLs, Open Graph URLs, `robots.txt` and `sitemap.xml`.
 
+## Services
+
+`/sluzby` lists published services with status `Aktívna`. The service model has
+a name, slug, short description and optional image; `Skrytá` services remain in
+Studio but are not sent to the website. The page intentionally has no service
+detail route yet. Add it when a client needs individual service landing pages.
+
 ## Local development
 
 First, run the development server:

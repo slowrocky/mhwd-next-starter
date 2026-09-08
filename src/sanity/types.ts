@@ -65,6 +65,25 @@ export type Slug = {
   source?: string;
 };
 
+export type Service = {
+  _id: string;
+  _type: "service";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name: string;
+  slug: Slug;
+  description: string;
+  image?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  status: "active" | "hidden";
+};
+
 export type SiteSettings = {
   _id: string;
   _type: "siteSettings";
@@ -195,6 +214,7 @@ export type AllSanitySchemaTypes =
   | SanityImageCrop
   | SanityImageHotspot
   | Slug
+  | Service
   | SiteSettings
   | SanityImagePaletteSwatch
   | SanityImagePalette
@@ -209,6 +229,16 @@ export type AllSanitySchemaTypes =
 // Variable: SITE_SETTINGS_QUERY
 // Query: *[_id == "siteSettings"][0] {    name,    shortName,    description,    url,    locale,    contact { email, phone },    navigation[] { _key, label, href },    social { facebook, instagram, linkedin }  }
 export type SITE_SETTINGS_QUERY_RESULT =
+  | {
+      name: string;
+      shortName: null;
+      description: string;
+      url: null;
+      locale: null;
+      contact: null;
+      navigation: null;
+      social: null;
+    }
   | {
       name: null;
       shortName: null;
@@ -251,6 +281,23 @@ export type SITE_SETTINGS_QUERY_RESULT =
       } | null;
     }
   | null;
+
+// Source: ../mhwd-next-starter/src/sanity/lib/queries.ts
+// Variable: SERVICES_QUERY
+// Query: *[_type == "service" && status == "active"] | order(name asc) {    _id,    name,    slug,    description,    image  }
+export type SERVICES_QUERY_RESULT = Array<{
+  _id: string;
+  name: string;
+  slug: Slug;
+  description: string;
+  image: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  } | null;
+}>;
 
 // Source: ../mhwd-next-starter/src/sanity/lib/queries.ts
 // Variable: PRODUCTS_SITEMAP_QUERY
@@ -302,6 +349,7 @@ export type PRODUCT_QUERY_RESULT = {
 declare global {
   interface SanityQueries {
     '\n  *[_id == "siteSettings"][0] {\n    name,\n    shortName,\n    description,\n    url,\n    locale,\n    contact { email, phone },\n    navigation[] { _key, label, href },\n    social { facebook, instagram, linkedin }\n  }\n': SITE_SETTINGS_QUERY_RESULT;
+    '\n  *[_type == "service" && status == "active"] | order(name asc) {\n    _id,\n    name,\n    slug,\n    description,\n    image\n  }\n': SERVICES_QUERY_RESULT;
     '\n  *[\n    _type == "product" &&\n    active == true &&\n    defined(slug.current) &&\n    slug.current != ""\n  ] | order(slug.current asc) {\n    "slug": slug.current,\n    _updatedAt\n  }\n': PRODUCTS_SITEMAP_QUERY_RESULT;
     '\n  *[\n    _type == "product" &&\n    active == true\n  ] | order(name asc) {\n    _id,\n    name,\n    slug,\n    description,\n    price,\n    image,\n    featured\n  }\n': PRODUCTS_QUERY_RESULT;
     '\n  *[\n    _type == "product" &&\n    slug.current == $slug &&\n    active == true\n  ][0] {\n    _id,\n    name,\n    slug,\n    description,\n    price,\n    image,\n    featured\n  }\n': PRODUCT_QUERY_RESULT;
