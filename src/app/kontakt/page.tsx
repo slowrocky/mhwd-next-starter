@@ -4,6 +4,8 @@ import { Container } from "@/app/components/layout/container";
 import { Section } from "@/app/components/layout/section";
 import { getSiteSettings } from "@/sanity/lib/site-settings";
 
+import { ContactForm } from "./contact-form";
+
 export async function generateMetadata(): Promise<Metadata> {
   const site = await getSiteSettings();
 
@@ -48,6 +50,8 @@ export default async function ContactPage() {
               <p className="mt-2 font-semibold">{site.contact.phone}</p>
             </a>
           </div>
+
+          <ContactForm />
         </Container>
       </Section>
     </main>

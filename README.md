@@ -100,6 +100,11 @@ references appear on `/referencie`, link to `/referencie/[slug]`, and are added
 to the sitemap. Until a reference is published in the CMS, the page keeps its
 empty state and does not invent client work.
 
+The contact page also includes a server-side form for Resend. Configure
+`RESEND_API_KEY` and `CONTACT_FROM_EMAIL` in the deployment environment to
+enable delivery; the recipient is the CMS contact e-mail. The form validates
+input and uses a honeypot field before calling Resend.
+
 ## Local development
 
 First, run the development server:
