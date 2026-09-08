@@ -65,6 +65,26 @@ export type Slug = {
   source?: string;
 };
 
+export type CaseStudy = {
+  _id: string;
+  _type: "caseStudy";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name: string;
+  slug: Slug;
+  description: string;
+  image?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  url?: string;
+  status: "active" | "hidden";
+};
+
 export type Service = {
   _id: string;
   _type: "service";
@@ -214,6 +234,7 @@ export type AllSanitySchemaTypes =
   | SanityImageCrop
   | SanityImageHotspot
   | Slug
+  | CaseStudy
   | Service
   | SiteSettings
   | SanityImagePaletteSwatch
@@ -234,6 +255,16 @@ export type SITE_SETTINGS_QUERY_RESULT =
       shortName: null;
       description: string;
       url: null;
+      locale: null;
+      contact: null;
+      navigation: null;
+      social: null;
+    }
+  | {
+      name: string;
+      shortName: null;
+      description: string;
+      url: string | null;
       locale: null;
       contact: null;
       navigation: null;
@@ -325,6 +356,50 @@ export type SERVICES_SITEMAP_QUERY_RESULT = Array<{
 }>;
 
 // Source: ../mhwd-next-starter/src/sanity/lib/queries.ts
+// Variable: REFERENCES_QUERY
+// Query: *[_type == "caseStudy" && status == "active"] | order(name asc) {    _id,    name,    slug,    description,    image,    url  }
+export type REFERENCES_QUERY_RESULT = Array<{
+  _id: string;
+  name: string;
+  slug: Slug;
+  description: string;
+  image: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  } | null;
+  url: string | null;
+}>;
+
+// Source: ../mhwd-next-starter/src/sanity/lib/queries.ts
+// Variable: REFERENCE_QUERY
+// Query: *[    _type == "caseStudy" &&    slug.current == $slug &&    status == "active"  ][0] {    _id,    name,    slug,    description,    image,    url  }
+export type REFERENCE_QUERY_RESULT = {
+  _id: string;
+  name: string;
+  slug: Slug;
+  description: string;
+  image: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  } | null;
+  url: string | null;
+} | null;
+
+// Source: ../mhwd-next-starter/src/sanity/lib/queries.ts
+// Variable: REFERENCES_SITEMAP_QUERY
+// Query: *[    _type == "caseStudy" &&    status == "active" &&    defined(slug.current) &&    slug.current != ""  ] | order(slug.current asc) {    "slug": slug.current,    _updatedAt  }
+export type REFERENCES_SITEMAP_QUERY_RESULT = Array<{
+  slug: string;
+  _updatedAt: string;
+}>;
+
+// Source: ../mhwd-next-starter/src/sanity/lib/queries.ts
 // Variable: PRODUCTS_SITEMAP_QUERY
 // Query: *[    _type == "product" &&    active == true &&    defined(slug.current) &&    slug.current != ""  ] | order(slug.current asc) {    "slug": slug.current,    _updatedAt  }
 export type PRODUCTS_SITEMAP_QUERY_RESULT = Array<{
@@ -377,6 +452,9 @@ declare global {
     '\n  *[_type == "service" && status == "active"] | order(name asc) {\n    _id,\n    name,\n    slug,\n    description,\n    image\n  }\n': SERVICES_QUERY_RESULT;
     '\n  *[\n    _type == "service" &&\n    slug.current == $slug &&\n    status == "active"\n  ][0] {\n    _id,\n    name,\n    slug,\n    description,\n    image\n  }\n': SERVICE_QUERY_RESULT;
     '\n  *[\n    _type == "service" &&\n    status == "active" &&\n    defined(slug.current) &&\n    slug.current != ""\n  ] | order(slug.current asc) {\n    "slug": slug.current,\n    _updatedAt\n  }\n': SERVICES_SITEMAP_QUERY_RESULT;
+    '\n  *[_type == "caseStudy" && status == "active"] | order(name asc) {\n    _id,\n    name,\n    slug,\n    description,\n    image,\n    url\n  }\n': REFERENCES_QUERY_RESULT;
+    '\n  *[\n    _type == "caseStudy" &&\n    slug.current == $slug &&\n    status == "active"\n  ][0] {\n    _id,\n    name,\n    slug,\n    description,\n    image,\n    url\n  }\n': REFERENCE_QUERY_RESULT;
+    '\n  *[\n    _type == "caseStudy" &&\n    status == "active" &&\n    defined(slug.current) &&\n    slug.current != ""\n  ] | order(slug.current asc) {\n    "slug": slug.current,\n    _updatedAt\n  }\n': REFERENCES_SITEMAP_QUERY_RESULT;
     '\n  *[\n    _type == "product" &&\n    active == true &&\n    defined(slug.current) &&\n    slug.current != ""\n  ] | order(slug.current asc) {\n    "slug": slug.current,\n    _updatedAt\n  }\n': PRODUCTS_SITEMAP_QUERY_RESULT;
     '\n  *[\n    _type == "product" &&\n    active == true\n  ] | order(name asc) {\n    _id,\n    name,\n    slug,\n    description,\n    price,\n    image,\n    featured\n  }\n': PRODUCTS_QUERY_RESULT;
     '\n  *[\n    _type == "product" &&\n    slug.current == $slug &&\n    active == true\n  ][0] {\n    _id,\n    name,\n    slug,\n    description,\n    price,\n    image,\n    featured\n  }\n': PRODUCT_QUERY_RESULT;

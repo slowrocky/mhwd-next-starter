@@ -95,8 +95,10 @@ Details have their own canonical URL, share metadata and appear in the sitemap.
 
 The navigation routes `/kontakt` and `/referencie` are included in the starter.
 Contact details come from the CMS site settings with the checked-in fallback.
-The references page is intentionally an empty starter surface until a reusable
-reference schema is added; it does not invent client work.
+References use the Studio `Referencia` model (internally `caseStudy`). Active
+references appear on `/referencie`, link to `/referencie/[slug]`, and are added
+to the sitemap. Until a reference is published in the CMS, the page keeps its
+empty state and does not invent client work.
 
 ## Local development
 

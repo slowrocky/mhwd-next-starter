@@ -49,6 +49,44 @@ export const SERVICES_SITEMAP_QUERY = defineQuery(`
   }
 `);
 
+export const REFERENCES_QUERY = defineQuery(`
+  *[_type == "caseStudy" && status == "active"] | order(name asc) {
+    _id,
+    name,
+    slug,
+    description,
+    image,
+    url
+  }
+`);
+
+export const REFERENCE_QUERY = defineQuery(`
+  *[
+    _type == "caseStudy" &&
+    slug.current == $slug &&
+    status == "active"
+  ][0] {
+    _id,
+    name,
+    slug,
+    description,
+    image,
+    url
+  }
+`);
+
+export const REFERENCES_SITEMAP_QUERY = defineQuery(`
+  *[
+    _type == "caseStudy" &&
+    status == "active" &&
+    defined(slug.current) &&
+    slug.current != ""
+  ] | order(slug.current asc) {
+    "slug": slug.current,
+    _updatedAt
+  }
+`);
+
 export const PRODUCTS_SITEMAP_QUERY = defineQuery(`
   *[
     _type == "product" &&
