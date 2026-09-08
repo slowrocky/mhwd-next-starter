@@ -1,20 +1,21 @@
 import type { MetadataRoute } from "next";
 
-import { siteConfig } from "@/config/site";
 import { client, sanityFetchOptions } from "@/sanity/lib/client";
 import { PRODUCTS_SITEMAP_QUERY } from "@/sanity/lib/queries";
+import { getSiteSettings } from "@/sanity/lib/site-settings";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const products = await client.fetch(PRODUCTS_SITEMAP_QUERY, {}, sanityFetchOptions);
+  const site = await getSiteSettings();
 
   return [
     {
-      url: siteConfig.url,
+      url: site.url,
       changeFrequency: "monthly",
       priority: 1,
     },
     ...products.flatMap((product) => product.slug ? [{
-      url: new URL(`/produkty/${encodeURIComponent(product.slug)}`, siteConfig.url).href,
+      url: new URL(`/produkty/${encodeURIComponent(product.slug)}`, site.url).href,
       lastModified: product._updatedAt,
     }] : []),
   ];

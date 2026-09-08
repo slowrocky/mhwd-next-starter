@@ -1,10 +1,12 @@
 import Link from "next/link";
 
-import { siteConfig } from "@/config/site";
+import type { SiteConfig } from "@/config/site";
 
 import { Container } from "./container";
 
-export function Footer() {
+type FooterProps = { site: SiteConfig };
+
+export function Footer({ site }: FooterProps) {
   const currentYear = new Date().getFullYear();
 
   return (
@@ -12,10 +14,10 @@ export function Footer() {
       <Container>
         <div className="grid gap-10 py-12 md:grid-cols-3">
           <div>
-            <p className="font-semibold">{siteConfig.name}</p>
+            <p className="font-semibold">{site.name}</p>
 
             <p className="mt-3 max-w-sm text-sm leading-6 text-muted">
-              {siteConfig.description}
+              {site.description}
             </p>
           </div>
 
@@ -23,7 +25,7 @@ export function Footer() {
             <p className="text-sm font-semibold">Navigácia</p>
 
             <ul className="mt-4 space-y-2">
-              {siteConfig.navigation.map((item) => (
+              {site.navigation.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
@@ -42,19 +44,19 @@ export function Footer() {
             <div className="mt-4 space-y-2 text-sm text-muted">
               <p>
                 <a
-                  href={`mailto:${siteConfig.contact.email}`}
+                  href={`mailto:${site.contact.email}`}
                   className="transition-colors hover:text-foreground"
                 >
-                  {siteConfig.contact.email}
+                  {site.contact.email}
                 </a>
               </p>
 
               <p>
                 <a
-                  href={`tel:${siteConfig.contact.phone.replace(/\s/g, "")}`}
+                  href={`tel:${site.contact.phone.replace(/\s/g, "")}`}
                   className="transition-colors hover:text-foreground"
                 >
-                  {siteConfig.contact.phone}
+                  {site.contact.phone}
                 </a>
               </p>
             </div>
@@ -63,7 +65,7 @@ export function Footer() {
 
         <div className="border-t border-border py-6">
           <p className="text-sm text-muted">
-            © {currentYear} {siteConfig.name}
+            © {currentYear} {site.name}
           </p>
         </div>
       </Container>

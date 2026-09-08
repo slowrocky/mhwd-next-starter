@@ -65,6 +65,33 @@ export type Slug = {
   source?: string;
 };
 
+export type SiteSettings = {
+  _id: string;
+  _type: "siteSettings";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name: string;
+  shortName: string;
+  description: string;
+  url: string;
+  locale: string;
+  contact?: {
+    email: string;
+    phone: string;
+  };
+  navigation?: Array<{
+    label: string;
+    href: string;
+    _key: string;
+  }>;
+  social?: {
+    facebook?: string;
+    instagram?: string;
+    linkedin?: string;
+  };
+};
+
 export type SanityImagePaletteSwatch = {
   _type: "sanity.imagePaletteSwatch";
   background?: string;
@@ -168,6 +195,7 @@ export type AllSanitySchemaTypes =
   | SanityImageCrop
   | SanityImageHotspot
   | Slug
+  | SiteSettings
   | SanityImagePaletteSwatch
   | SanityImagePalette
   | SanityImageDimensions
@@ -176,6 +204,53 @@ export type AllSanitySchemaTypes =
   | SanityAssetSourceData
   | SanityImageAsset
   | Geopoint;
+
+// Source: ../mhwd-next-starter/src/sanity/lib/queries.ts
+// Variable: SITE_SETTINGS_QUERY
+// Query: *[_id == "siteSettings"][0] {    name,    shortName,    description,    url,    locale,    contact { email, phone },    navigation[] { _key, label, href },    social { facebook, instagram, linkedin }  }
+export type SITE_SETTINGS_QUERY_RESULT =
+  | {
+      name: null;
+      shortName: null;
+      description: string | null;
+      url: string;
+      locale: null;
+      contact: null;
+      navigation: null;
+      social: null;
+    }
+  | {
+      name: string;
+      shortName: null;
+      description: string | null;
+      url: null;
+      locale: null;
+      contact: null;
+      navigation: null;
+      social: null;
+    }
+  | {
+      name: string;
+      shortName: string;
+      description: string;
+      url: string;
+      locale: string;
+      contact: {
+        email: string;
+        phone: string;
+      } | null;
+      navigation: Array<{
+        _key: string;
+        label: string;
+        href: string;
+      }> | null;
+      social: {
+        facebook: string | null;
+        instagram: string | null;
+        linkedin: string | null;
+      } | null;
+    }
+  | null;
 
 // Source: ../mhwd-next-starter/src/sanity/lib/queries.ts
 // Variable: PRODUCTS_SITEMAP_QUERY
@@ -226,6 +301,7 @@ export type PRODUCT_QUERY_RESULT = {
 // Query TypeMap
 declare global {
   interface SanityQueries {
+    '\n  *[_id == "siteSettings"][0] {\n    name,\n    shortName,\n    description,\n    url,\n    locale,\n    contact { email, phone },\n    navigation[] { _key, label, href },\n    social { facebook, instagram, linkedin }\n  }\n': SITE_SETTINGS_QUERY_RESULT;
     '\n  *[\n    _type == "product" &&\n    active == true &&\n    defined(slug.current) &&\n    slug.current != ""\n  ] | order(slug.current asc) {\n    "slug": slug.current,\n    _updatedAt\n  }\n': PRODUCTS_SITEMAP_QUERY_RESULT;
     '\n  *[\n    _type == "product" &&\n    active == true\n  ] | order(name asc) {\n    _id,\n    name,\n    slug,\n    description,\n    price,\n    image,\n    featured\n  }\n': PRODUCTS_QUERY_RESULT;
     '\n  *[\n    _type == "product" &&\n    slug.current == $slug &&\n    active == true\n  ][0] {\n    _id,\n    name,\n    slug,\n    description,\n    price,\n    image,\n    featured\n  }\n': PRODUCT_QUERY_RESULT;

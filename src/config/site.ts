@@ -1,4 +1,15 @@
-export const siteConfig = {
+export type SiteConfig = {
+  name: string;
+  shortName: string;
+  description: string;
+  url: string;
+  locale: string;
+  contact: { email: string; phone: string };
+  navigation: Array<{ label: string; href: string }>;
+  social: { facebook: string; instagram: string; linkedin: string };
+};
+
+export const siteConfig: SiteConfig = {
   name: "MHWD Next Starter",
   shortName: "MHWD",
   description: "Reusable foundation for custom MHWD client websites.",
@@ -23,4 +34,4 @@ export const siteConfig = {
     instagram: "",
     linkedin: "",
   },
-} as const;
+};

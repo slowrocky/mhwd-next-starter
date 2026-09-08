@@ -1,22 +1,24 @@
 import Link from "next/link";
 
-import { siteConfig } from "@/config/site";
+import type { SiteConfig } from "@/config/site";
 
 import { Container } from "./container";
 import { MobileNav } from "./mobile-nav";
 
-export function Header() {
+type HeaderProps = { site: SiteConfig };
+
+export function Header({ site }: HeaderProps) {
   return (
     <header className="relative border-b border-border bg-background">
       <Container>
         <div className="flex h-16 items-center justify-between">
           <Link href="/" className="text-lg font-semibold tracking-tight">
-            {siteConfig.shortName}
+            {site.shortName}
           </Link>
 
           <nav aria-label="Hlavná navigácia" className="hidden md:block">
             <ul className="flex items-center gap-6">
-              {siteConfig.navigation.map((item) => (
+              {site.navigation.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
@@ -29,7 +31,7 @@ export function Header() {
             </ul>
           </nav>
 
-          <MobileNav />
+          <MobileNav navigation={site.navigation} />
         </div>
       </Container>
     </header>

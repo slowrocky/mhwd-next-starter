@@ -67,6 +67,23 @@ Before deploying a client site, set `siteConfig.url` to its real public origin.
 Canonical URLs, Open Graph URLs, robots and sitemap currently use the starter
 placeholder `https://example.com`.
 
+## Site settings
+
+The standalone Studio has one `Nastavenia webu` singleton for the site name,
+short name, description, public URL, locale, contact details, navigation and
+social links. Its fixed document ID is `siteSettings`; the Studio structure
+keeps it out of regular document lists.
+
+Until that document is published, the frontend uses the starter defaults in
+`src/config/site.ts`. This makes the initial setup safe and lets a fresh clone
+build before a client fills in CMS content. After publishing settings, the
+header, footer, root metadata, product metadata, robots and sitemap use CMS
+values with the same 60-second revalidation policy.
+
+For a new client, open `Nastavenia webu` in Studio, complete all four sections
+and publish it. Set the real public URL before deployment: it supplies canonical
+URLs, Open Graph URLs, `robots.txt` and `sitemap.xml`.
+
 ## Local development
 
 First, run the development server:

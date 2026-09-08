@@ -1,5 +1,18 @@
 import { defineQuery } from "next-sanity";
 
+export const SITE_SETTINGS_QUERY = defineQuery(`
+  *[_id == "siteSettings"][0] {
+    name,
+    shortName,
+    description,
+    url,
+    locale,
+    contact { email, phone },
+    navigation[] { _key, label, href },
+    social { facebook, instagram, linkedin }
+  }
+`);
+
 export const PRODUCTS_SITEMAP_QUERY = defineQuery(`
   *[
     _type == "product" &&

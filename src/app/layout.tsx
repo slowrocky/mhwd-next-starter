@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { siteConfig } from "@/config/site";
 import { Header } from "@/app/components/layout/header";
 import { Footer } from "@/app/components/layout/footer";
+import { getSiteSettings } from "@/sanity/lib/site-settings";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,46 +15,45 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(siteConfig.url),
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await getSiteSettings();
 
-  title: {
-    default: siteConfig.name,
-    template: `%s | ${siteConfig.shortName}`,
-  },
+  return {
+    metadataBase: new URL(site.url),
+    title: { default: site.name, template: `%s | ${site.shortName}` },
+    description: site.description,
+    openGraph: {
+      type: "website",
+      locale: site.locale,
+      url: site.url,
+      siteName: site.name,
+      title: site.name,
+      description: site.description,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: site.name,
+      description: site.description,
+    },
+  };
+}
 
-  description: siteConfig.description,
-
-  openGraph: {
-    type: "website",
-    locale: siteConfig.locale,
-    url: siteConfig.url,
-    siteName: siteConfig.name,
-    title: siteConfig.name,
-    description: siteConfig.description,
-  },
-
-  twitter: {
-    card: "summary_large_image",
-    title: siteConfig.name,
-    description: siteConfig.description,
-  },
-};
-
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const site = await getSiteSettings();
+
   return (
-    <html lang="sk" data-scroll-behavior="smooth">
+    <html lang={site.locale.slice(0, 2)} data-scroll-behavior="smooth">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <div className="flex min-h-screen flex-col">
-          <Header />
+          <Header site={site} />
 
           <div className="flex-1">{children}</div>
 
-          <Footer />
+          <Footer site={site} />
         </div>
       </body>
     </html>

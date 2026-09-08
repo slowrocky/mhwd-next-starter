@@ -8,7 +8,7 @@ import { Section } from "@/app/components/layout/section";
 import { client, sanityFetchOptions } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
 import { PRODUCT_QUERY } from "@/sanity/lib/queries";
-import { siteConfig } from "@/config/site";
+import { getSiteSettings } from "@/sanity/lib/site-settings";
 
 type ProductPageProps = {
   params: Promise<{
@@ -27,9 +27,10 @@ const getProduct = cache(async (slug: string) => {
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { slug } = await params;
   const product = await getProduct(slug);
-  const title = `${product.name} | ${siteConfig.shortName}`;
-  const description = product.description?.trim() || siteConfig.description;
-  const url = new URL(`/produkty/${encodeURIComponent(slug)}`, siteConfig.url).href;
+  const site = await getSiteSettings();
+  const title = `${product.name} | ${site.shortName}`;
+  const description = product.description?.trim() || site.description;
+  const url = new URL(`/produkty/${encodeURIComponent(slug)}`, site.url).href;
   const images = product.image?.asset
     ? [{
         url: urlFor(product.image).width(1200).height(630).fit("crop").url(),
@@ -45,8 +46,8 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     alternates: { canonical: url },
     openGraph: {
       type: "website",
-      locale: siteConfig.locale,
-      siteName: siteConfig.name,
+      locale: site.locale,
+      siteName: site.name,
       title,
       description,
       url,

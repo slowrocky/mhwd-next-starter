@@ -3,9 +3,11 @@
 import { useState } from "react";
 import Link from "next/link";
 
-import { siteConfig } from "@/config/site";
+import type { SiteConfig } from "@/config/site";
 
-export function MobileNav() {
+type MobileNavProps = { navigation: SiteConfig["navigation"] };
+
+export function MobileNav({ navigation }: MobileNavProps) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -33,7 +35,7 @@ export function MobileNav() {
         >
           <nav aria-label="Mobilná navigácia">
             <ul className="mx-auto flex max-w-7xl flex-col px-4 py-4 sm:px-6">
-              {siteConfig.navigation.map((item) => (
+              {navigation.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
