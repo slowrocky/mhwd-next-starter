@@ -105,6 +105,10 @@ The contact page also includes a server-side form for Resend. Configure
 enable delivery; the recipient is the CMS contact e-mail. The form validates
 input and uses a honeypot field before calling Resend.
 
+Copy `.env.example` to the deployment environment and set the Sanity project
+values plus a verified Resend sender address. Keep `RESEND_API_KEY` server-only;
+it must never use a `NEXT_PUBLIC_` prefix or be committed to the repository.
+
 ## Local development
 
 First, run the development server:
