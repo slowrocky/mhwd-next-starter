@@ -128,8 +128,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ## Continuous integration
 
 GitHub Actions runs `npm ci`, lint and a production build for pushes to `main`
-and for pull requests. The workflow uses placeholder public Sanity values so it
-does not require project secrets during validation.
+and for pull requests. The workflow uses the public starter Sanity project ID;
+it does not require project secrets during validation.
 
 For a new client project, follow [`TEMPLATE_SETUP.md`](TEMPLATE_SETUP.md).
 
