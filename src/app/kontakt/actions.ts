@@ -41,6 +41,13 @@ export async function submitContact(
   }
 
   const site = await getSiteSettings();
+  if (site.contact.email === "info@example.com") {
+    return {
+      status: "error",
+      message: "Najprv nastavte skutočný kontaktný e-mail v CMS Site Settings.",
+    };
+  }
+
   try {
     const response = await fetch("https://api.resend.com/emails", {
       method: "POST",
