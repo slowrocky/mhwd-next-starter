@@ -1,8 +1,7 @@
 import { Container } from "@/app/components/layout/container";
 import { Section } from "@/app/components/layout/section";
-import { client } from "@/sanity/lib/client";
+import { client, sanityFetchOptions } from "@/sanity/lib/client";
 import { PRODUCTS_QUERY } from "@/sanity/lib/queries";
-import type { Product } from "@/types/product";
 import Link from "next/link";
 
 import Image from "next/image";
@@ -10,7 +9,7 @@ import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
 
 export default async function Home() {
-  const products = await client.fetch<Product[]>(PRODUCTS_QUERY);
+  const products = await client.fetch(PRODUCTS_QUERY, {}, sanityFetchOptions);
 
   return (
     <main>

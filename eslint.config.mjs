@@ -5,6 +5,13 @@ import nextTs from "eslint-config-next/typescript";
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
+  {
+    files: ["src/sanity/types.ts"],
+    rules: {
+      // TypeGen emits an empty interface extending the global query registry.
+      "@typescript-eslint/no-empty-object-type": "off",
+    },
+  },
   // Override default ignores of eslint-config-next.
   globalIgnores([
     // Default ignores of eslint-config-next:

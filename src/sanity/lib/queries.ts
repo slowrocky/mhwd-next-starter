@@ -1,5 +1,17 @@
 import { defineQuery } from "next-sanity";
 
+export const PRODUCTS_SITEMAP_QUERY = defineQuery(`
+  *[
+    _type == "product" &&
+    active == true &&
+    defined(slug.current) &&
+    slug.current != ""
+  ] | order(slug.current asc) {
+    "slug": slug.current,
+    _updatedAt
+  }
+`);
+
 export const PRODUCTS_QUERY = defineQuery(`
   *[
     _type == "product" &&

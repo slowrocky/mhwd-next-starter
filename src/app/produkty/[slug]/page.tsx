@@ -1,12 +1,14 @@
 import Image from "next/image";
+import type { Metadata } from "next";
+import { cache } from "react";
 import { notFound } from "next/navigation";
 
 import { Container } from "@/app/components/layout/container";
 import { Section } from "@/app/components/layout/section";
-import { client } from "@/sanity/lib/client";
+import { client, sanityFetchOptions } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
 import { PRODUCT_QUERY } from "@/sanity/lib/queries";
-import type { Product } from "@/types/product";
+import { siteConfig } from "@/config/site";
 
 type ProductPageProps = {
   params: Promise<{
@@ -14,14 +16,54 @@ type ProductPageProps = {
   }>;
 };
 
-export default async function ProductPage({ params }: ProductPageProps) {
-  const { slug } = await params;
-
-  const product = await client.fetch<Product | null>(PRODUCT_QUERY, { slug });
-
+const getProduct = cache(async (slug: string) => {
+  const product = await client.fetch(PRODUCT_QUERY, { slug }, sanityFetchOptions);
   if (!product) {
     notFound();
   }
+  return product;
+});
+
+export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const product = await getProduct(slug);
+  const title = `${product.name} | ${siteConfig.shortName}`;
+  const description = product.description?.trim() || siteConfig.description;
+  const url = new URL(`/produkty/${encodeURIComponent(slug)}`, siteConfig.url).href;
+  const images = product.image?.asset
+    ? [{
+        url: urlFor(product.image).width(1200).height(630).fit("crop").url(),
+        width: 1200,
+        height: 630,
+        alt: product.name,
+      }]
+    : [];
+
+  return {
+    title: product.name,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      type: "website",
+      locale: siteConfig.locale,
+      siteName: siteConfig.name,
+      title,
+      description,
+      url,
+      images,
+    },
+    twitter: {
+      card: images.length ? "summary_large_image" : "summary",
+      title,
+      description,
+      images,
+    },
+  };
+}
+
+export default async function ProductPage({ params }: ProductPageProps) {
+  const { slug } = await params;
+  const product = await getProduct(slug);
 
   return (
     <main>
