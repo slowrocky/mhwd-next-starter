@@ -88,8 +88,8 @@ URLs, Open Graph URLs, `robots.txt` and `sitemap.xml`.
 
 `/sluzby` lists published services with status `Aktívna`. The service model has
 a name, slug, short description and optional image; `Skrytá` services remain in
-Studio but are not sent to the website. The page intentionally has no service
-detail route yet. Add it when a client needs individual service landing pages.
+Studio but are not sent to the website. Each card links to `/sluzby/[slug]`.
+Details have their own canonical URL, share metadata and appear in the sitemap.
 
 ## Local development
 

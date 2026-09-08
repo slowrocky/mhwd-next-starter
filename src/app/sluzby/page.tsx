@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 
 import { Container } from "@/app/components/layout/container";
 import { Section } from "@/app/components/layout/section";
@@ -53,7 +54,11 @@ export default async function ServicesPage() {
                     </div>
                   )}
                   <div className="p-6">
-                    <h2 className="text-xl font-semibold tracking-tight">{service.name}</h2>
+                    <h2 className="text-xl font-semibold tracking-tight">
+                      <Link href={`/sluzby/${service.slug.current}`} className="hover:underline">
+                        {service.name}
+                      </Link>
+                    </h2>
                     <p className="mt-3 text-sm leading-6 text-muted">{service.description}</p>
                   </div>
                 </article>

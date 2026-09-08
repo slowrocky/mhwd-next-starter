@@ -23,6 +23,32 @@ export const SERVICES_QUERY = defineQuery(`
   }
 `);
 
+export const SERVICE_QUERY = defineQuery(`
+  *[
+    _type == "service" &&
+    slug.current == $slug &&
+    status == "active"
+  ][0] {
+    _id,
+    name,
+    slug,
+    description,
+    image
+  }
+`);
+
+export const SERVICES_SITEMAP_QUERY = defineQuery(`
+  *[
+    _type == "service" &&
+    status == "active" &&
+    defined(slug.current) &&
+    slug.current != ""
+  ] | order(slug.current asc) {
+    "slug": slug.current,
+    _updatedAt
+  }
+`);
+
 export const PRODUCTS_SITEMAP_QUERY = defineQuery(`
   *[
     _type == "product" &&

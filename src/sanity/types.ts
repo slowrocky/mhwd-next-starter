@@ -300,6 +300,31 @@ export type SERVICES_QUERY_RESULT = Array<{
 }>;
 
 // Source: ../mhwd-next-starter/src/sanity/lib/queries.ts
+// Variable: SERVICE_QUERY
+// Query: *[    _type == "service" &&    slug.current == $slug &&    status == "active"  ][0] {    _id,    name,    slug,    description,    image  }
+export type SERVICE_QUERY_RESULT = {
+  _id: string;
+  name: string;
+  slug: Slug;
+  description: string;
+  image: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  } | null;
+} | null;
+
+// Source: ../mhwd-next-starter/src/sanity/lib/queries.ts
+// Variable: SERVICES_SITEMAP_QUERY
+// Query: *[    _type == "service" &&    status == "active" &&    defined(slug.current) &&    slug.current != ""  ] | order(slug.current asc) {    "slug": slug.current,    _updatedAt  }
+export type SERVICES_SITEMAP_QUERY_RESULT = Array<{
+  slug: string;
+  _updatedAt: string;
+}>;
+
+// Source: ../mhwd-next-starter/src/sanity/lib/queries.ts
 // Variable: PRODUCTS_SITEMAP_QUERY
 // Query: *[    _type == "product" &&    active == true &&    defined(slug.current) &&    slug.current != ""  ] | order(slug.current asc) {    "slug": slug.current,    _updatedAt  }
 export type PRODUCTS_SITEMAP_QUERY_RESULT = Array<{
@@ -350,6 +375,8 @@ declare global {
   interface SanityQueries {
     '\n  *[_id == "siteSettings"][0] {\n    name,\n    shortName,\n    description,\n    url,\n    locale,\n    contact { email, phone },\n    navigation[] { _key, label, href },\n    social { facebook, instagram, linkedin }\n  }\n': SITE_SETTINGS_QUERY_RESULT;
     '\n  *[_type == "service" && status == "active"] | order(name asc) {\n    _id,\n    name,\n    slug,\n    description,\n    image\n  }\n': SERVICES_QUERY_RESULT;
+    '\n  *[\n    _type == "service" &&\n    slug.current == $slug &&\n    status == "active"\n  ][0] {\n    _id,\n    name,\n    slug,\n    description,\n    image\n  }\n': SERVICE_QUERY_RESULT;
+    '\n  *[\n    _type == "service" &&\n    status == "active" &&\n    defined(slug.current) &&\n    slug.current != ""\n  ] | order(slug.current asc) {\n    "slug": slug.current,\n    _updatedAt\n  }\n': SERVICES_SITEMAP_QUERY_RESULT;
     '\n  *[\n    _type == "product" &&\n    active == true &&\n    defined(slug.current) &&\n    slug.current != ""\n  ] | order(slug.current asc) {\n    "slug": slug.current,\n    _updatedAt\n  }\n': PRODUCTS_SITEMAP_QUERY_RESULT;
     '\n  *[\n    _type == "product" &&\n    active == true\n  ] | order(name asc) {\n    _id,\n    name,\n    slug,\n    description,\n    price,\n    image,\n    featured\n  }\n': PRODUCTS_QUERY_RESULT;
     '\n  *[\n    _type == "product" &&\n    slug.current == $slug &&\n    active == true\n  ][0] {\n    _id,\n    name,\n    slug,\n    description,\n    price,\n    image,\n    featured\n  }\n': PRODUCT_QUERY_RESULT;
