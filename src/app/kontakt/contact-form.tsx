@@ -11,7 +11,7 @@ export function ContactForm() {
 
   return (
     <form action={formAction} className="mt-12 max-w-2xl space-y-5">
-      <div className="absolute -left-[9999px]" aria-hidden="true">
+      <div className="absolute left-[-9999px]" aria-hidden="true">
         <label htmlFor="website">Webová stránka</label>
         <input id="website" name="website" tabIndex={-1} autoComplete="off" />
       </div>
