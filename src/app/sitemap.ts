@@ -22,6 +22,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly",
       priority: 0.8,
     },
+    {
+      url: new URL("/referencie", site.url).href,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
+    {
+      url: new URL("/kontakt", site.url).href,
+      changeFrequency: "monthly",
+      priority: 0.6,
+    },
     ...services.map((service) => ({
       url: new URL(`/sluzby/${encodeURIComponent(service.slug)}`, site.url).href,
       lastModified: service._updatedAt,

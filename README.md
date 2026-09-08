@@ -91,6 +91,13 @@ a name, slug, short description and optional image; `Skrytá` services remain in
 Studio but are not sent to the website. Each card links to `/sluzby/[slug]`.
 Details have their own canonical URL, share metadata and appear in the sitemap.
 
+## Contact and references
+
+The navigation routes `/kontakt` and `/referencie` are included in the starter.
+Contact details come from the CMS site settings with the checked-in fallback.
+The references page is intentionally an empty starter surface until a reusable
+reference schema is added; it does not invent client work.
+
 ## Local development
 
 First, run the development server:
